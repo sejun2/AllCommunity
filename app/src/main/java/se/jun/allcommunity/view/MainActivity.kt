@@ -14,6 +14,7 @@ import se.jun.allcommunity.extension.toToast
 import se.jun.allcommunity.extension.toVisible
 import se.jun.allcommunity.viewmodel.ParsingViewModel
 import timber.log.Timber
+import java.lang.RuntimeException
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
