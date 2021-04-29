@@ -24,7 +24,7 @@ class ParsingViewModel : ViewModel() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 _isProcessing.value = true
-                parsingRepository.parseData(url)
+                _parsedData.value = parsingRepository.parseData(url).await().toString()
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {

@@ -2,14 +2,13 @@ package se.jun.allcommunity.repository
 
 import kotlinx.coroutines.*
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import timber.log.Timber
 
 class ParsingRepository {
-    suspend fun parseData(url: String) {
-        withContext(Dispatchers.IO) {
-            val doc = Jsoup.connect(url).get()
-
-            Timber.d("doc : ${doc.data()}")
+    fun parseData(url: String): Deferred<Document> {
+        return CoroutineScope(Dispatchers.IO).async {
+            Jsoup.connect(url).get()
         }
     }
 }
