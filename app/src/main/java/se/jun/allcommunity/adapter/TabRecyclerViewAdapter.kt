@@ -41,7 +41,5 @@ class TabRecyclerViewAdapter : RecyclerView.Adapter<TabRecyclerViewAdapter.TabVi
 
     }
 
-    override fun getItemCount(): Int {
-
-    }
+    override fun getItemCount() = 0
 }

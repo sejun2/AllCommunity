@@ -51,7 +51,5 @@ class MainContentRecyclerViewAdapter :
 
     }
 
-    override fun getItemCount(): Int {
-
-    }
+    override fun getItemCount() = 0
 }
