@@ -1,5 +1,10 @@
 package se.jun.allcommunity.repository
 
-class ParsingRepository {
+import org.jsoup.Jsoup
 
+class ParsingRepository {
+    suspend fun parseData(url: String) {
+
+        val doc = Jsoup.connect(url).get()
+    }
 }
