@@ -3,6 +3,7 @@ package se.jun.allcommunity.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
@@ -36,10 +37,7 @@ class MainContentRecyclerViewAdapter :
         val category = itemView.findViewById<TextView>(R.id.category_text_view)
         val time = itemView.findViewById<TextView>(R.id.time_text_view)
         val count = itemView.findViewById<TextView>(R.id.view_count_text_view)
-
-        fun setData() {
-
-        }
+        val container = itemView.findViewById<LinearLayout>(R.id.content_item_container)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainContentViewHolder {
@@ -48,8 +46,15 @@ class MainContentRecyclerViewAdapter :
     }
 
     override fun onBindViewHolder(holder: MainContentViewHolder, position: Int) {
+        holder.title.text = _contentData[position].title
+        holder.time.text = _contentData[position].time
+        holder.count.text = _contentData[position].count
+        holder.category.text = _contentData[position].category
 
+        holder.container.setOnClickListener {
+            TODO("Content 클릭했을 경우 해당 사이트로 이동 (WebView) ")
+        }
     }
 
-    override fun getItemCount() = 0
+    override fun getItemCount() = _contentData.size
 }

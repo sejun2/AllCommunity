@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity">
+    tools:context=".view.activity.MainActivity">
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:overScrollMode="ifContentScrolls"
         app:layout_constraintTop_toBottomOf="@id/action_bar_include"
-        tools:itemCount="8"
         tools:listitem="@layout/tab_item" />
 
     <androidx.recyclerview.widget.RecyclerView

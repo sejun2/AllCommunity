@@ -1,4 +1,4 @@
-package se.jun.allcommunity.view
+package se.jun.allcommunity.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

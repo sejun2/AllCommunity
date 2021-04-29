@@ -38,8 +38,8 @@ class TabRecyclerViewAdapter : RecyclerView.Adapter<TabRecyclerViewAdapter.TabVi
     }
 
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
-
+        holder.site_name.text = _tabData[position]
     }
 
-    override fun getItemCount() = 0
+    override fun getItemCount() = _tabData.size
 }

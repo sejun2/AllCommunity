@@ -6,4 +6,6 @@ import se.jun.allcommunity.repository.ParsingRepository
 
 val ioModule = module {
     single { ParsingRepository() }
+
+    single { }
 }
