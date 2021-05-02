@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import se.jun.allcommunity.R
+import se.jun.allcommunity.databinding.FragmentWebViewBinding
 
 class WebViewFragment : Fragment() {
+    private lateinit var mBinding : FragmentWebViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,14 +21,19 @@ class WebViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_web_view, container, false)
+
+        mBinding = FragmentWebViewBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
+    fun loadUrl(url : String){
+        mBinding.webView.loadUrl(url)
+    }
     companion object {
         private var INSTANCE: WebViewFragment? = null
 
         @JvmStatic
-        fun getInstance(param1: String, param2: String): WebViewFragment {
+        fun getInstance(): WebViewFragment {
             if (INSTANCE == null) {
                 INSTANCE = WebViewFragment()
             }

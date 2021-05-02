@@ -28,6 +28,7 @@
         tools:listitem="@layout/tab_item" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginHorizontal="4dp"
         android:id="@+id/main_content_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

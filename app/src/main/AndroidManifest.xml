@@ -3,7 +3,7 @@
     package="se.jun.allcommunity">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AllCommunity"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.DrawerActivity"></activity>
+        <activity android:name=".view.activity.WebViewActivity"></activity>
+        <activity android:name=".view.activity.DrawerActivity" />
         <activity android:name=".view.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

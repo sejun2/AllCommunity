@@ -6,38 +6,38 @@
     android:layout_marginVertical="4dp"
     android:clickable="true"
     android:paddingHorizontal="4dp"
-    android:paddingVertical="4dp"
+    android:paddingVertical="8dp"
     android:weightSum="12">
 
     <TextView
         android:id="@+id/category_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:ellipsize="middle"
+        android:ellipsize="none"
         android:singleLine="true" />
 
     <TextView
         android:id="@+id/title_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="7.5"
-        android:ellipsize="middle"
+        android:layout_weight="7"
+        android:ellipsize="end"
         android:singleLine="true" />
 
     <TextView
         android:id="@+id/view_count_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
-        android:ellipsize="middle"
+        android:ellipsize="none"
         android:singleLine="true" />
 
     <TextView
         android:id="@+id/time_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:ellipsize="middle"
+        android:layout_weight="2"
+        android:ellipsize="none"
         android:singleLine="true" />
 </LinearLayout>

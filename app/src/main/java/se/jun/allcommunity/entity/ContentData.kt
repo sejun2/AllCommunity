@@ -10,5 +10,8 @@ data class ContentData(
     @SerializedName("time")
     val time: String?,
     @SerializedName("count")
-    val count: String
+    val count: String?,
+    @SerializedName("href")
+    val href: String?
+
 )

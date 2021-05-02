@@ -1,15 +1,20 @@
 package se.jun.allcommunity.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
 import se.jun.allcommunity.entity.ContentData
+import se.jun.allcommunity.view.activity.WebViewActivity
+import timber.log.Timber
 
-class MainContentRecyclerViewAdapter :
+class MainContentRecyclerViewAdapter(val mContext : Context) :
     RecyclerView.Adapter<MainContentRecyclerViewAdapter.MainContentViewHolder>() {
     private val _contentData = ArrayList<ContentData>()
 
@@ -52,7 +57,11 @@ class MainContentRecyclerViewAdapter :
         holder.category.text = _contentData[position].category
 
         holder.container.setOnClickListener {
-            TODO("Content 클릭했을 경우 해당 사이트로 이동 (WebView) ")
+            Timber.d("container clicked! href : ${_contentData.get(position).href} ")
+            val webViewActivity = WebViewActivity()
+
+            val intent = Intent(mContext, webViewActivity::class.java).putExtra("url", _contentData.get(position).href)
+            mContext.startActivity(intent)
         }
     }
 

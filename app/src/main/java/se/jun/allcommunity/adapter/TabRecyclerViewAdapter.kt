@@ -1,17 +1,26 @@
 package se.jun.allcommunity.adapter
 
+import android.content.Context
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.CheckedTextView
+
 import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
+import se.jun.allcommunity.extension.toChecked
+import se.jun.allcommunity.extension.toUnChecked
+import timber.log.Timber
 
-class TabRecyclerViewAdapter : RecyclerView.Adapter<TabRecyclerViewAdapter.TabViewHolder>() {
+
+class TabRecyclerViewAdapter(val mContext : Context) : RecyclerView.Adapter<TabRecyclerViewAdapter.TabViewHolder>() {
     val tabData: ArrayList<String>
         get() = _tabData
 
     private val _tabData = ArrayList<String>()
+
+    private var selectedPosition = 0
 
     fun setTabData(data: List<String>) {
         _tabData.clear()
@@ -28,8 +37,9 @@ class TabRecyclerViewAdapter : RecyclerView.Adapter<TabRecyclerViewAdapter.TabVi
         notifyDataSetChanged()
     }
 
+
     inner class TabViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val site_name = itemView.findViewById<TextView>(R.id.site_name_text_view)
+        val site_name = itemView.findViewById<CheckedTextView>(R.id.site_name_text_view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabViewHolder {
@@ -39,7 +49,21 @@ class TabRecyclerViewAdapter : RecyclerView.Adapter<TabRecyclerViewAdapter.TabVi
 
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
         holder.site_name.text = _tabData[position]
+
+        if(holder.site_name.isActivated){
+            (holder.site_name as CheckedTextView).toChecked()
+        }
+        else{
+            (holder.site_name as CheckedTextView).toUnChecked()
+        }
+
+        holder.site_name.setOnClickListener {
+            Timber.d("oldPosition : ${getItemId(holder.oldPosition)}")
+        }
+
     }
 
     override fun getItemCount() = _tabData.size
+
+
 }

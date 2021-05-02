@@ -2,10 +2,14 @@ package se.jun.allcommunity.extension
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.CheckedTextView
+import android.widget.TextView
 import android.widget.Toast
+import se.jun.allcommunity.R
 
 /**
  * View Extend Functions
@@ -20,6 +24,18 @@ fun View.toInvisible() {
 
 fun View.toGone() {
     this.visibility = View.GONE
+}
+
+fun CheckedTextView.toChecked() {
+    setTextColor(resources.getColor(R.color.white))
+    background = resources.getDrawable(R.drawable.tab_item_selected)
+    this.isChecked = true
+}
+
+fun CheckedTextView.toUnChecked() {
+    setTextColor(resources.getColor(android.R.color.holo_red_light))
+    background = resources.getDrawable(R.drawable.tab_item_unselected)
+    this.isChecked = false
 }
 
 /**
