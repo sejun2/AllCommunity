@@ -5,19 +5,25 @@ import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import se.jun.allcommunity.R
 import se.jun.allcommunity.adapter.MainContentRecyclerViewAdapter
 import se.jun.allcommunity.adapter.TabRecyclerViewAdapter
+import se.jun.allcommunity.database.dao.SiteCategoryDao
 import se.jun.allcommunity.databinding.ActivityMainBinding
 import se.jun.allcommunity.extension.toInvisible
 import se.jun.allcommunity.extension.toVisible
+import se.jun.allcommunity.viewmodel.DatabaseViewModel
 import se.jun.allcommunity.viewmodel.ParsingViewModel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private val parsingViewModel: ParsingViewModel by viewModel()
+    private val siteCategoryDao : SiteCategoryDao by inject()
+    private val databaseViewModel:DatabaseViewModel by inject()
 
     private lateinit var tabRecyclerViewAdapter: TabRecyclerViewAdapter
     private lateinit var mainContentRecyclerViewAdapter: MainContentRecyclerViewAdapter
@@ -37,7 +43,10 @@ class MainActivity : AppCompatActivity() {
         //for test
         parsingViewModel.parseYgosuData()
 
+
+        databaseViewModel.getCategoryData()
     }
+
 
     private fun initView() {
         mBinding.tabRecyclerView.layoutManager =
@@ -45,14 +54,11 @@ class MainActivity : AppCompatActivity() {
         tabRecyclerViewAdapter = TabRecyclerViewAdapter(this.applicationContext)
         mBinding.tabRecyclerView.adapter = tabRecyclerViewAdapter
 
-        tabRecyclerViewAdapter.setTabData(categoryList)
 
         mainContentRecyclerViewAdapter = MainContentRecyclerViewAdapter(this)
         mBinding.mainContentRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         mBinding.mainContentRecyclerView.layoutManager = LinearLayoutManager(this)
         mBinding.mainContentRecyclerView.adapter = mainContentRecyclerViewAdapter
-
-
     }
 
     private fun initViewModel() {
@@ -65,6 +71,13 @@ class MainActivity : AppCompatActivity() {
             Timber.d("ygosuData observed!")
             mainContentRecyclerViewAdapter.setContentData(it)
             mainContentRecyclerViewAdapter.notifyDataSetChanged()
+        }
+
+        databaseViewModel.categoryData.observe(this){
+            tabRecyclerViewAdapter.setTabData(it.map {
+                it::name.get()
+            })
+            tabRecyclerViewAdapter.notifyDataSetChanged()
         }
     }
 

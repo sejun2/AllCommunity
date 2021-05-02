@@ -6,12 +6,12 @@ import se.jun.allcommunity.database.entity.SiteCategory
 @Dao
 interface SiteCategoryDao {
     @Query("select * from sitecategory")
-    fun getAll(): List<String>
+    fun getAll(): List<SiteCategory>
 
     @Query("delete from sitecategory where name = :name")
     fun delete(name: String)
 
-    @Delete
+    @Query("delete from sitecategory")
     fun deleteAll()
 
     @Insert
