@@ -5,7 +5,7 @@ import se.jun.allcommunity.database.entity.SiteCategory
 
 @Dao
 interface SiteCategoryDao {
-    @Query("select * from sitecategory")
+    @Query("select * from sitecategory order by `index` asc")
     fun getAll(): List<SiteCategory>
 
     @Query("delete from sitecategory where name = :name")

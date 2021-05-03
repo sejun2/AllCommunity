@@ -28,6 +28,8 @@ class ParsingViewModel : ViewModel() {
         parseYgosuDataJob = viewModelScope.launch {
             delay(400L)
             _isProcessing.value = true
+
+
             try {
                 val data =
                     parsingRepository.parseData("https://m.ygosu.com/board/real_article/?searcht=&search=&page=$page")

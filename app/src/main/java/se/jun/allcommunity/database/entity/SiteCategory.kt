@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class SiteCategory(
-    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "index")
     val index: Int?,
 
+    @PrimaryKey
     @ColumnInfo(name = "name")
     val name: String,
 )

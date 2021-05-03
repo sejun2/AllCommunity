@@ -34,16 +34,18 @@ class App : Application() {
 
 
     }
-    private fun initCategory(){
-        Timber.d("initCategory ...")
-        if(!getSharedPreferences("category", MODE_PRIVATE).getBoolean("isCategoryInit", false)) {
-            val res = resources.getStringArray(R.array.categories).toList()
 
-            for(_res in res) {
-                val tmpRes = SiteCategory(null, _res)
+    private fun initCategory() {
+        if (!getSharedPreferences("category", MODE_PRIVATE).getBoolean("isCategoryInit", false)) {
+            Timber.d("initCategory ...")
+            val res = resources.getStringArray(R.array.categories).toList()
+            var index = 1
+            for (_res in res) {
+                val tmpRes = SiteCategory(index++, _res)
                 siteCategoryDao.insertCategory(tmpRes)
             }
-            getSharedPreferences("category", MODE_PRIVATE).edit().putBoolean("isCategoryInit", true).commit()
+            getSharedPreferences("category", MODE_PRIVATE).edit().putBoolean("isCategoryInit", true)
+                .commit()
         }
     }
 }
