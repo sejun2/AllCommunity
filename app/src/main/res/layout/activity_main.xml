@@ -27,12 +27,10 @@
         app:layout_constraintTop_toBottomOf="@id/action_bar_include"
         tools:listitem="@layout/tab_item" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginHorizontal="4dp"
-        android:id="@+id/main_content_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_recycler_view"
-        tools:listitem="@layout/content_item" />
+   <FrameLayout
+       android:id="@+id/main_content_container"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/tab_recycler_view"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

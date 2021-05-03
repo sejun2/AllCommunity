@@ -15,6 +15,7 @@ import se.jun.allcommunity.database.dao.SiteCategoryDao
 import se.jun.allcommunity.databinding.ActivityMainBinding
 import se.jun.allcommunity.extension.toInvisible
 import se.jun.allcommunity.extension.toVisible
+import se.jun.allcommunity.view.fragment.MainContentFragment
 import se.jun.allcommunity.viewmodel.DatabaseViewModel
 import se.jun.allcommunity.viewmodel.ParsingViewModel
 import timber.log.Timber
@@ -22,8 +23,8 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private val parsingViewModel: ParsingViewModel by viewModel()
-    private val siteCategoryDao : SiteCategoryDao by inject()
-    private val databaseViewModel:DatabaseViewModel by inject()
+    private val siteCategoryDao: SiteCategoryDao by inject()
+    private val databaseViewModel: DatabaseViewModel by inject()
 
     private lateinit var tabRecyclerViewAdapter: TabRecyclerViewAdapter
     private lateinit var mainContentRecyclerViewAdapter: MainContentRecyclerViewAdapter
@@ -40,10 +41,6 @@ class MainActivity : AppCompatActivity() {
         initView()
         initViewModel()
 
-        //for test
-        parsingViewModel.parseYgosuData()
-
-
         databaseViewModel.getCategoryData()
     }
 
@@ -54,11 +51,10 @@ class MainActivity : AppCompatActivity() {
         tabRecyclerViewAdapter = TabRecyclerViewAdapter(this.applicationContext)
         mBinding.tabRecyclerView.adapter = tabRecyclerViewAdapter
 
+        //MainContentFragment
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_content_container, MainContentFragment.getInstance()).commit()
 
-        mainContentRecyclerViewAdapter = MainContentRecyclerViewAdapter(this)
-        mBinding.mainContentRecyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-        mBinding.mainContentRecyclerView.layoutManager = LinearLayoutManager(this)
-        mBinding.mainContentRecyclerView.adapter = mainContentRecyclerViewAdapter
     }
 
     private fun initViewModel() {
@@ -67,15 +63,11 @@ class MainActivity : AppCompatActivity() {
             if (isProcessing) mBinding.progressBar.toVisible()
             else mBinding.progressBar.toInvisible()
         }
-        parsingViewModel.ygosuData.observe(this){
-            Timber.d("ygosuData observed!")
-            mainContentRecyclerViewAdapter.setContentData(it)
-            mainContentRecyclerViewAdapter.notifyDataSetChanged()
-        }
 
-        databaseViewModel.categoryData.observe(this){
-            tabRecyclerViewAdapter.setTabData(it.map {
-                it::name.get()
+
+        databaseViewModel.categoryData.observe(this) {
+            tabRecyclerViewAdapter.setTabData(it.map { siteCategory ->
+                siteCategory::name.get()
             })
             tabRecyclerViewAdapter.notifyDataSetChanged()
         }

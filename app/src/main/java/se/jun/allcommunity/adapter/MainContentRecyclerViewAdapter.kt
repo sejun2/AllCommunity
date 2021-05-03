@@ -14,7 +14,7 @@ import se.jun.allcommunity.entity.ContentData
 import se.jun.allcommunity.view.activity.WebViewActivity
 import timber.log.Timber
 
-class MainContentRecyclerViewAdapter(val mContext : Context) :
+class MainContentRecyclerViewAdapter(val mContext: Context) :
     RecyclerView.Adapter<MainContentRecyclerViewAdapter.MainContentViewHolder>() {
     private val _contentData = ArrayList<ContentData>()
 
@@ -60,7 +60,10 @@ class MainContentRecyclerViewAdapter(val mContext : Context) :
             Timber.d("container clicked! href : ${_contentData.get(position).href} ")
             val webViewActivity = WebViewActivity()
 
-            val intent = Intent(mContext, webViewActivity::class.java).putExtra("url", _contentData.get(position).href)
+            val intent = Intent(mContext, webViewActivity::class.java).putExtra(
+                "url",
+                _contentData.get(position).href
+            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             mContext.startActivity(intent)
         }
     }
