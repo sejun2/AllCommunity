@@ -17,7 +17,7 @@ import timber.log.Timber
 class MainContentFragment : Fragment() {
     private lateinit var mBinding: FragmentMainContentBinding
     private lateinit var mainContentRecyclerViewAdapter: MainContentRecyclerViewAdapter
-    val parsingViewModel: ParsingViewModel by sharedViewModel()
+    private val parsingViewModel: ParsingViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,13 @@ class MainContentFragment : Fragment() {
         initViewModel()
         initView()
 
-        parsingViewModel.parseYgosuData()
+        parsingViewModel.parseYgosuData(1)
+
+        Thread(Runnable {
+            Thread.sleep(3000L)
+
+            parsingViewModel.parseYgosuData(2)
+        }).start()
     }
 
     private fun initView() {

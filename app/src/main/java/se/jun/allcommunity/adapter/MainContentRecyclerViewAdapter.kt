@@ -5,12 +5,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
 import se.jun.allcommunity.entity.ContentData
+import se.jun.allcommunity.utils.OnThrottleClickListener
 import se.jun.allcommunity.view.activity.WebViewActivity
 import timber.log.Timber
 
@@ -56,17 +56,15 @@ class MainContentRecyclerViewAdapter(val mContext: Context) :
         holder.count.text = _contentData[position].count
         holder.category.text = _contentData[position].category
 
-        holder.container.setOnClickListener {
+        holder.container.setOnClickListener(OnThrottleClickListener(1000L) {
             Timber.d("container clicked! href : ${_contentData.get(position).href} ")
             val webViewActivity = WebViewActivity()
-
             val intent = Intent(mContext, webViewActivity::class.java).putExtra(
                 "url",
                 _contentData.get(position).href
             ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             mContext.startActivity(intent)
-        }
+        })
     }
-
     override fun getItemCount() = _contentData.size
 }

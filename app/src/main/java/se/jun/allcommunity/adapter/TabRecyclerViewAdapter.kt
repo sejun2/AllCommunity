@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
 import se.jun.allcommunity.extension.toChecked
 import se.jun.allcommunity.extension.toUnChecked
+import se.jun.allcommunity.utils.OnThrottleClickListener
 import timber.log.Timber
 
 
-class TabRecyclerViewAdapter(val mContext : Context) : RecyclerView.Adapter<TabRecyclerViewAdapter.TabViewHolder>() {
+class TabRecyclerViewAdapter(val mContext: Context) :
+    RecyclerView.Adapter<TabRecyclerViewAdapter.TabViewHolder>() {
     val tabData: ArrayList<String>
         get() = _tabData
 
@@ -50,16 +52,15 @@ class TabRecyclerViewAdapter(val mContext : Context) : RecyclerView.Adapter<TabR
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
         holder.site_name.text = _tabData[position]
 
-        if(holder.site_name.isActivated){
+        if (holder.site_name.isActivated) {
             (holder.site_name as CheckedTextView).toChecked()
-        }
-        else{
+        } else {
             (holder.site_name as CheckedTextView).toUnChecked()
         }
 
-        holder.site_name.setOnClickListener {
-            Timber.d("oldPosition : ${getItemId(holder.oldPosition)}")
-        }
+        holder.site_name.setOnClickListener(OnThrottleClickListener(1000L){
+            Timber.d("site_name onClicked!")
+        })
 
     }
 
