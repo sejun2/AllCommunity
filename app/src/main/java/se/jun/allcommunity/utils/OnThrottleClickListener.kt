@@ -3,7 +3,7 @@ package se.jun.allcommunity.utils
 import android.view.View
 
 class OnThrottleClickListener(
-    private val interval: Long,
+    private val interval: Long = 300L,
     private val onClickListener: View.OnClickListener
 ) : View.OnClickListener {
 

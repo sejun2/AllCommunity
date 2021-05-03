@@ -12,6 +12,7 @@ import se.jun.allcommunity.R
 import se.jun.allcommunity.extension.toChecked
 import se.jun.allcommunity.extension.toUnChecked
 import se.jun.allcommunity.utils.OnThrottleClickListener
+import se.jun.allcommunity.view.fragment.MainContentFragment
 import timber.log.Timber
 
 
@@ -52,14 +53,9 @@ class TabRecyclerViewAdapter(val mContext: Context) :
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
         holder.site_name.text = _tabData[position]
 
-        if (holder.site_name.isActivated) {
-            (holder.site_name as CheckedTextView).toChecked()
-        } else {
-            (holder.site_name as CheckedTextView).toUnChecked()
-        }
-
         holder.site_name.setOnClickListener(OnThrottleClickListener(1000L){
             Timber.d("site_name onClicked!")
+            MainContentFragment.getInstance().clearFragment()
         })
 
     }

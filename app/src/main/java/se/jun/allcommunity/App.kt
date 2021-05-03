@@ -41,7 +41,7 @@ class App : Application() {
             val res = resources.getStringArray(R.array.categories).toList()
             var index = 1
             for (_res in res) {
-                val tmpRes = SiteCategory(index++, _res)
+                val tmpRes = SiteCategory(index++, _res!!)
                 siteCategoryDao.insertCategory(tmpRes)
             }
             getSharedPreferences("category", MODE_PRIVATE).edit().putBoolean("isCategoryInit", true)

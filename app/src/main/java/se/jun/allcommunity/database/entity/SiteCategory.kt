@@ -12,4 +12,7 @@ data class SiteCategory(
     @PrimaryKey
     @ColumnInfo(name = "name")
     val name: String,
+
+//    @ColumnInfo(name = "url")
+//    val url: String
 )

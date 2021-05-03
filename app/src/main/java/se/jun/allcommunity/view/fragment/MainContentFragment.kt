@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 import se.jun.allcommunity.adapter.MainContentRecyclerViewAdapter
@@ -18,6 +20,20 @@ class MainContentFragment : Fragment() {
     private lateinit var mBinding: FragmentMainContentBinding
     private lateinit var mainContentRecyclerViewAdapter: MainContentRecyclerViewAdapter
     private val parsingViewModel: ParsingViewModel by sharedViewModel()
+
+    private var currentPage = 1
+
+    companion object {
+        private var INSTANCE: MainContentFragment? = null
+
+        @JvmStatic
+        fun getInstance(): MainContentFragment {
+            if (INSTANCE == null) {
+                INSTANCE = MainContentFragment()
+            }
+            return INSTANCE!!
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +58,6 @@ class MainContentFragment : Fragment() {
 
         parsingViewModel.parseYgosuData(1)
 
-        Thread(Runnable {
-            Thread.sleep(3000L)
-
-            parsingViewModel.parseYgosuData(2)
-        }).start()
     }
 
     private fun initView() {
@@ -54,6 +65,24 @@ class MainContentFragment : Fragment() {
             MainContentRecyclerViewAdapter(requireActivity().applicationContext)
         mBinding.mainContentRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
         mBinding.mainContentRecyclerView.adapter = mainContentRecyclerViewAdapter
+
+        mBinding.mainContentRecyclerView.setOnScrollListener(object : OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if(!mBinding.mainContentRecyclerView.canScrollVertically(1)){
+                    //end of the list
+                    Timber.d("this is end of the list")
+                    parsingViewModel.parseYgosuData(++currentPage)
+                }
+            }
+        })
+
+        mBinding.swipeLayout.setOnRefreshListener {
+            mBinding.swipeLayout.isRefreshing = false
+            currentPage = 1
+            parsingViewModel.parseYgosuData(currentPage)
+        }
+
+
     }
 
     private fun initViewModel() {
@@ -64,15 +93,39 @@ class MainContentFragment : Fragment() {
         }
     }
 
-    companion object {
-        private var INSTANCE: MainContentFragment? = null
+    fun clearFragment(){
+        currentPage = 1
+    }
 
-        @JvmStatic
-        fun getInstance(): MainContentFragment {
-            if (INSTANCE == null) {
-                INSTANCE = MainContentFragment()
-            }
-            return INSTANCE!!
-        }
+    fun parseYgosu() = parsingViewModel.parseYgosuData(currentPage)
+    fun parseClien(){
+
+    }
+    fun parse82Cook(){
+
+    }
+    fun parsePomPu(){
+
+    }
+    fun parseHumorUniv(){
+
+    }
+    fun parseDogDrip(){
+
+    }
+    fun parseDdanzi(){
+
+    }
+    fun parseBobae(){
+
+    }
+    fun parseMlbPark(){
+
+    }
+    fun parseGasengi(){
+
+    }
+    fun parseFmKorea(){
+
     }
 }
