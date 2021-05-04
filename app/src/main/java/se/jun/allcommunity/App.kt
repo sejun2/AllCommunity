@@ -39,9 +39,11 @@ class App : Application() {
         if (!getSharedPreferences("category", MODE_PRIVATE).getBoolean("isCategoryInit", false)) {
             Timber.d("initCategory ...")
             val res = resources.getStringArray(R.array.categories).toList()
+            val urlRes = resources.getStringArray(R.array.categories_url).toList()
+            val startRes = resources.getStringArray(R.array.categories_start).toList()
             var index = 1
-            for (_res in res) {
-                val tmpRes = SiteCategory(index++, _res!!)
+            for (i in res.indices) {
+                val tmpRes = SiteCategory(index++, res[i], urlRes[i], startRes[i].toInt())
                 siteCategoryDao.insertCategory(tmpRes)
             }
             getSharedPreferences("category", MODE_PRIVATE).edit().putBoolean("isCategoryInit", true)

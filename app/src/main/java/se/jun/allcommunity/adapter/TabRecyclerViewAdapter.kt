@@ -9,8 +9,7 @@ import android.widget.CheckedTextView
 
 import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
-import se.jun.allcommunity.extension.toChecked
-import se.jun.allcommunity.extension.toUnChecked
+import se.jun.allcommunity.database.entity.SiteCategory
 import se.jun.allcommunity.utils.OnThrottleClickListener
 import se.jun.allcommunity.view.fragment.MainContentFragment
 import timber.log.Timber
@@ -18,14 +17,14 @@ import timber.log.Timber
 
 class TabRecyclerViewAdapter(val mContext: Context) :
     RecyclerView.Adapter<TabRecyclerViewAdapter.TabViewHolder>() {
-    val tabData: ArrayList<String>
+    val tabData: ArrayList<SiteCategory>
         get() = _tabData
 
-    private val _tabData = ArrayList<String>()
+    private val _tabData = ArrayList<SiteCategory>()
 
     private var selectedPosition = 0
 
-    fun setTabData(data: List<String>) {
+    fun setTabData(data: List<SiteCategory>) {
         _tabData.clear()
         _tabData.addAll(data)
     }
@@ -35,7 +34,7 @@ class TabRecyclerViewAdapter(val mContext: Context) :
         notifyDataSetChanged()
     }
 
-    fun addTabData(item: String) {
+    fun addTabData(item: SiteCategory) {
         _tabData.add(item)
         notifyDataSetChanged()
     }
@@ -51,11 +50,13 @@ class TabRecyclerViewAdapter(val mContext: Context) :
     }
 
     override fun onBindViewHolder(holder: TabViewHolder, position: Int) {
-        holder.site_name.text = _tabData[position]
+        holder.site_name.text = _tabData[position].name
 
-        holder.site_name.setOnClickListener(OnThrottleClickListener(1000L){
+        holder.site_name.setOnClickListener(OnThrottleClickListener(1000L) {
             Timber.d("site_name onClicked!")
             MainContentFragment.getInstance().clearFragment()
+            MainContentFragment.getInstance()
+                .parseWeb(_tabData[position].name, _tabData[position].url, _tabData[position].start.toString())
         })
 
     }

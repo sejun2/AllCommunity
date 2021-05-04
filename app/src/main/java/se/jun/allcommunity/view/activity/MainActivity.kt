@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initView() {
+        setSupportActionBar(mBinding.toolbar)
+
         mBinding.tabRecyclerView.layoutManager =
             LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         tabRecyclerViewAdapter = TabRecyclerViewAdapter(this.applicationContext)

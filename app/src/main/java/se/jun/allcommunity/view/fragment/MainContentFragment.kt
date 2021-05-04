@@ -9,10 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
 import se.jun.allcommunity.adapter.MainContentRecyclerViewAdapter
 import se.jun.allcommunity.databinding.FragmentMainContentBinding
-import se.jun.allcommunity.view.activity.MainActivity
 import se.jun.allcommunity.viewmodel.ParsingViewModel
 import timber.log.Timber
 
@@ -21,7 +19,8 @@ class MainContentFragment : Fragment() {
     private lateinit var mainContentRecyclerViewAdapter: MainContentRecyclerViewAdapter
     private val parsingViewModel: ParsingViewModel by sharedViewModel()
 
-    private var currentPage = 1
+    var currentPage = 1
+    var currentCategory = ""
 
     companion object {
         private var INSTANCE: MainContentFragment? = null
@@ -55,9 +54,6 @@ class MainContentFragment : Fragment() {
 
         initViewModel()
         initView()
-
-        parsingViewModel.parseYgosuData(1)
-
     }
 
     private fun initView() {
@@ -68,7 +64,7 @@ class MainContentFragment : Fragment() {
 
         mBinding.mainContentRecyclerView.setOnScrollListener(object : OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if(!mBinding.mainContentRecyclerView.canScrollVertically(1)){
+                if (!mBinding.mainContentRecyclerView.canScrollVertically(1)) {
                     //end of the list
                     Timber.d("this is end of the list")
                     parsingViewModel.parseYgosuData(++currentPage)
@@ -93,39 +89,34 @@ class MainContentFragment : Fragment() {
         }
     }
 
-    fun clearFragment(){
+    fun clearFragment() {
         currentPage = 1
     }
 
+
+    fun parseClien() {
+
+    }
+
+    fun parsePomPu() {
+
+    }
+
+    fun parseHumorUniv() {
+
+    }
+
+    fun parseDogDrip() {
+
+    }
+
+    fun parseBobae() {
+
+    }
+
     fun parseYgosu() = parsingViewModel.parseYgosuData(currentPage)
-    fun parseClien(){
 
-    }
-    fun parse82Cook(){
-
-    }
-    fun parsePomPu(){
-
-    }
-    fun parseHumorUniv(){
-
-    }
-    fun parseDogDrip(){
-
-    }
-    fun parseDdanzi(){
-
-    }
-    fun parseBobae(){
-
-    }
-    fun parseMlbPark(){
-
-    }
-    fun parseGasengi(){
-
-    }
-    fun parseFmKorea(){
-
+    fun parseWeb(name:String, url: String, page: String) {
+        parsingViewModel.parseWeb(name, url, page)
     }
 }

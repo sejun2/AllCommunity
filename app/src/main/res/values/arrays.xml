@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categories">
-        <item>전체</item>
         <item>클리앙</item>
-        <item>82cook</item>
         <item>뽐뿌</item>
         <item>웃대</item>
         <item>개드립</item>
-        <item>딴지</item>
         <item>보배</item>
-        <item>엠팍</item>
+<!--        <item>엠팍</item>
         <item>가생이</item>
-        <item>에펨</item>
+        <item>에펨</item>-->
         <item>Ygosu</item>
+    </string-array>
+    <string-array name="categories_url">
+        <item>https://m.clien.net/service/board/park?&amp;od=T31&amp;category=0&amp;po=</item> <!--0부터 시작-->
+        <item>http://m.ppomppu.co.kr/new/pop_bbs.php?&amp;page=</item> <!--1부터 시작-->
+        <item>http://m.humoruniv.com/board/list.html?table=pds&amp;st=day&amp;pg=</item> <!--0부터 시작-->
+        <item>https://www.dogdrip.net/index.php?mid=dogdrip&amp;page=</item> <!--1부터 시작-->
+        <item>https://m.bobaedream.co.kr/board/new_writing/best/</item> <!--1부터 시작-->
+        <item>https://m.ygosu.com/board/real_article/?searcht=&amp;search=&amp;page=</item> <!--1부터 시작-->
+    </string-array>
+    <string-array name="categories_start">
+        <item>0</item>
+        <item>1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
     </string-array>
 </resources>

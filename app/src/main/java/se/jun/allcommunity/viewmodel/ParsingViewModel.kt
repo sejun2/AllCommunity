@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import org.koin.java.KoinJavaComponent.inject
 import se.jun.allcommunity.entity.ContentData
@@ -22,6 +23,77 @@ class ParsingViewModel : ViewModel() {
     val ygosuData: LiveData<ArrayList<ContentData>> = _ygosuData
 
     private var parseYgosuDataJob: Job? = null
+
+    private var parseJob: Job? = null
+
+    fun parseWeb(name: String, url: String, page: String) {
+        parseJob?.cancel()
+        parseJob = viewModelScope.launch {
+            delay(400L)
+            _isProcessing.value = true
+            try {
+                val data = parsingRepository.parseData(url + page)
+
+                val processedData = processData()
+
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                _isProcessing.value = false
+            }
+        }
+    }
+
+    fun processData(name: String, data: Document) {
+        when (name) {
+            "Ygosu" -> processYgosuData(data)
+        }
+    }
+
+    fun processYgosuData(data: Document){
+        val tmpList = ArrayList<ContentData>()
+
+
+        val tmp: Elements = data.select("#article_list li a")
+
+        for (x in tmp) {
+            val _href = "https://m.ygosu.com" + x.attr("href")
+            val rawText = x.text()
+            val subRawText = rawText.substringAfter("]").trim()
+
+
+            val splitText = subRawText.split("|")
+
+
+            val _count = splitText.get(2).substringAfter(": ").trim()
+
+
+            val _time = splitText.get(1).trimMargin()
+
+            val tmpTitle = splitText.get(0).substringBefore(" N").trim()
+            val titleSplit = tmpTitle.split(" ")
+            val _title = titleSplit.subList(0, titleSplit.lastIndex).joinToString("")
+
+
+            val _tmp = ContentData(
+                href = _href,
+                title = _title,
+                count = _count,
+                time = _time,
+                category = "Ygosu"
+            )
+            tmpList.add(_tmp)
+        }
+        if (page == 1) {
+            _ygosuData.value = tmpList
+            Timber.d("tmpList : $tmpList")
+        } else {
+            //관련 문제 https://www.charlezz.com/?p=989
+            _ygosuData.addAll(tmpList)
+            Timber.d("tmpList : $tmpList")
+        }
+    }
 
     fun parseYgosuData(page: Int = 1) {
         parseYgosuDataJob?.cancel()

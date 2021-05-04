@@ -7,12 +7,15 @@ import androidx.room.PrimaryKey
 @Entity
 data class SiteCategory(
     @ColumnInfo(name = "index")
-    val index: Int?,
+    val index: Int,
 
     @PrimaryKey
     @ColumnInfo(name = "name")
     val name: String,
 
-//    @ColumnInfo(name = "url")
-//    val url: String
+    @ColumnInfo(name = "url")
+    val url: String,
+
+    @ColumnInfo(name = "start")
+    val start:Int
 )
