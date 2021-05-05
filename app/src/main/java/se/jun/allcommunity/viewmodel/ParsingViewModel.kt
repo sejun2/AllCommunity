@@ -19,23 +19,22 @@ class ParsingViewModel : ViewModel() {
     private val _isProcessing = MutableLiveData<Boolean>()
     val isProcessing: LiveData<Boolean> = _isProcessing
 
-    private val _ygosuData = ListLiveData<ContentData>()
-    val ygosuData: LiveData<ArrayList<ContentData>> = _ygosuData
+    private val _parsedData = ListLiveData<ContentData>()
+    val parsedData: LiveData<ArrayList<ContentData>> = _parsedData
 
     private var parseYgosuDataJob: Job? = null
 
     private var parseJob: Job? = null
 
-    fun parseWeb(name: String, url: String, page: String) {
+    fun parseWeb(name: String, url: String, page: Int) {
         parseJob?.cancel()
         parseJob = viewModelScope.launch {
             delay(400L)
             _isProcessing.value = true
             try {
-                val data = parsingRepository.parseData(url + page)
+                val data = parsingRepository.parseData(url + page.toString()).await()
 
-                val processedData = processData()
-
+                processData(name, data, page)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -45,13 +44,17 @@ class ParsingViewModel : ViewModel() {
         }
     }
 
-    fun processData(name: String, data: Document) {
+    fun processData(name: String, data: Document, page:Int) {
         when (name) {
-            "Ygosu" -> processYgosuData(data)
+            "Ygosu" -> processYgosuData(data, page)
+            "Bobae" -> processBobaeData(data, page)
         }
     }
 
-    fun processYgosuData(data: Document){
+    fun processBobaeData(data:Document, page:Int){
+
+    }
+    fun processYgosuData(data: Document, page:Int){
         val tmpList = ArrayList<ContentData>()
 
 
@@ -86,11 +89,11 @@ class ParsingViewModel : ViewModel() {
             tmpList.add(_tmp)
         }
         if (page == 1) {
-            _ygosuData.value = tmpList
+            _parsedData.value = tmpList
             Timber.d("tmpList : $tmpList")
         } else {
             //관련 문제 https://www.charlezz.com/?p=989
-            _ygosuData.addAll(tmpList)
+            _parsedData.addAll(tmpList)
             Timber.d("tmpList : $tmpList")
         }
     }
@@ -140,11 +143,11 @@ class ParsingViewModel : ViewModel() {
                     tmpList.add(_tmp)
                 }
                 if (page == 1) {
-                    _ygosuData.value = tmpList
+                    _parsedData.value = tmpList
                     Timber.d("tmpList : $tmpList")
                 } else {
                     //관련 문제 https://www.charlezz.com/?p=989
-                    _ygosuData.addAll(tmpList)
+                    _parsedData.addAll(tmpList)
                     Timber.d("tmpList : $tmpList")
                 }
             } catch (e: Exception) {

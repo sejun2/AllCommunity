@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import se.jun.allcommunity.adapter.MainContentRecyclerViewAdapter
+import se.jun.allcommunity.database.entity.SiteCategory
 import se.jun.allcommunity.databinding.FragmentMainContentBinding
 import se.jun.allcommunity.viewmodel.ParsingViewModel
 import timber.log.Timber
@@ -19,8 +20,9 @@ class MainContentFragment : Fragment() {
     private lateinit var mainContentRecyclerViewAdapter: MainContentRecyclerViewAdapter
     private val parsingViewModel: ParsingViewModel by sharedViewModel()
 
-    var currentPage = 1
-    var currentCategory = ""
+    var currentPage: Int? = null
+    var currentCategory : SiteCategory? = null
+
 
     companion object {
         private var INSTANCE: MainContentFragment? = null
@@ -67,22 +69,23 @@ class MainContentFragment : Fragment() {
                 if (!mBinding.mainContentRecyclerView.canScrollVertically(1)) {
                     //end of the list
                     Timber.d("this is end of the list")
-                    parsingViewModel.parseYgosuData(++currentPage)
+                    currentPage = currentPage?.plus(1)
+                    parsingViewModel.parseWeb(currentCategory!!.name, currentCategory!!.url, currentPage!!)
                 }
             }
         })
 
         mBinding.swipeLayout.setOnRefreshListener {
             mBinding.swipeLayout.isRefreshing = false
-            currentPage = 1
-            parsingViewModel.parseYgosuData(currentPage)
+            currentPage = currentCategory?.start
+            parsingViewModel.parseWeb(currentCategory!!.name, currentCategory!!.url, currentPage!!)
         }
 
 
     }
 
     private fun initViewModel() {
-        parsingViewModel.ygosuData.observe(requireActivity()) {
+        parsingViewModel.parsedData.observe(requireActivity()) {
             Timber.d("ygosuData observed!")
             mainContentRecyclerViewAdapter.setContentData(it)
             mainContentRecyclerViewAdapter.notifyDataSetChanged()
@@ -93,30 +96,7 @@ class MainContentFragment : Fragment() {
         currentPage = 1
     }
 
-
-    fun parseClien() {
-
-    }
-
-    fun parsePomPu() {
-
-    }
-
-    fun parseHumorUniv() {
-
-    }
-
-    fun parseDogDrip() {
-
-    }
-
-    fun parseBobae() {
-
-    }
-
-    fun parseYgosu() = parsingViewModel.parseYgosuData(currentPage)
-
-    fun parseWeb(name:String, url: String, page: String) {
+    fun parseWeb(name:String, url: String, page: Int) {
         parsingViewModel.parseWeb(name, url, page)
     }
 }

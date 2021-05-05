@@ -66,9 +66,7 @@ class MainActivity : AppCompatActivity() {
 
 
         databaseViewModel.categoryData.observe(this) {
-            tabRecyclerViewAdapter.setTabData(it.map { siteCategory ->
-                siteCategory::name.get()
-            })
+            tabRecyclerViewAdapter.setTabData(it)
             tabRecyclerViewAdapter.notifyDataSetChanged()
         }
     }

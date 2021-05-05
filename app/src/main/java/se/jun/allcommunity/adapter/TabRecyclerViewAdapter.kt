@@ -54,9 +54,12 @@ class TabRecyclerViewAdapter(val mContext: Context) :
 
         holder.site_name.setOnClickListener(OnThrottleClickListener(1000L) {
             Timber.d("site_name onClicked!")
-            MainContentFragment.getInstance().clearFragment()
+
+            MainContentFragment.getInstance().currentCategory = _tabData[position]
+            MainContentFragment.getInstance().currentPage = _tabData[position].start
+
             MainContentFragment.getInstance()
-                .parseWeb(_tabData[position].name, _tabData[position].url, _tabData[position].start.toString())
+                .parseWeb(_tabData[position].name, _tabData[position].url, _tabData[position].start)
         })
 
     }
