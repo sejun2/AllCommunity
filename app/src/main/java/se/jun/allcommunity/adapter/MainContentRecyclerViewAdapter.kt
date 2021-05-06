@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import se.jun.allcommunity.R
+import se.jun.allcommunity.databinding.ContentItemBinding
 import se.jun.allcommunity.entity.ContentData
 import se.jun.allcommunity.utils.OnThrottleClickListener
 import se.jun.allcommunity.view.activity.WebViewActivity
@@ -37,34 +38,32 @@ class MainContentRecyclerViewAdapter(val mContext: Context) :
         notifyDataSetChanged()
     }
 
-    inner class MainContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title = itemView.findViewById<TextView>(R.id.title_text_view)
-        val category = itemView.findViewById<TextView>(R.id.category_text_view)
-        val time = itemView.findViewById<TextView>(R.id.time_text_view)
-        val count = itemView.findViewById<TextView>(R.id.view_count_text_view)
-        val container = itemView.findViewById<LinearLayout>(R.id.content_item_container)
+    inner class MainContentViewHolder(private val mBinding : ContentItemBinding) : RecyclerView.ViewHolder(mBinding.root) {
+        fun bind(contentData : ContentData){
+            mBinding.titleTextView.text = contentData.title
+            mBinding.categoryTextView.text = contentData.category
+            mBinding.timeTextView.text = contentData.time
+            mBinding.viewCountTextView.text = contentData.count
+            mBinding.contentItemContainer.setOnClickListener(OnThrottleClickListener(1000L){
+                Timber.d("container clicked! href : ${contentData.href} ")
+                val webViewActivity = WebViewActivity()
+                val intent = Intent(mContext, webViewActivity::class.java).putExtra(
+                    "url",
+                    contentData.href
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                mContext.startActivity(intent)
+            } )
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainContentViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
-        return MainContentViewHolder(view)
+        val binding = ContentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MainContentViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MainContentViewHolder, position: Int) {
-        holder.title.text = _contentData[position].title
-        holder.time.text = _contentData[position].time
-        holder.count.text = _contentData[position].count
-        holder.category.text = _contentData[position].category
-
-        holder.container.setOnClickListener(OnThrottleClickListener(1000L) {
-            Timber.d("container clicked! href : ${_contentData.get(position).href} ")
-            val webViewActivity = WebViewActivity()
-            val intent = Intent(mContext, webViewActivity::class.java).putExtra(
-                "url",
-                _contentData.get(position).href
-            ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            mContext.startActivity(intent)
-        })
+        holder.bind(_contentData[position])
     }
+
     override fun getItemCount() = _contentData.size
 }
