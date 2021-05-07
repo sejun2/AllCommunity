@@ -20,7 +20,7 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
-    private val parsingViewModel: ParsingViewModel by viewModel()
+    private val parsingViewModel: ParsingViewModel by viewModel() // similar with by viewModels()
     private val siteCategoryDao: SiteCategoryDao by inject()
     private val databaseViewModel: DatabaseViewModel by inject()
 
@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
+        //ViewModel의 isProcessing LiveData Observing
         parsingViewModel.isProcessing.observe(this) { isProcessing ->
             Timber.d("isProcessing : $isProcessing")
             if (isProcessing) mBinding.progressBar.toVisible()

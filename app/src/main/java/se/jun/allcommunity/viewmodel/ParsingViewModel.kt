@@ -26,16 +26,22 @@ class ParsingViewModel : ViewModel() {
 
     private var parseJob: Job? = null
 
+
+    /*
+    Debounce 는 이벤트를 그룹화하여 특정시간이 지난 후 하나의 이벤트만 발생하도록 하는 기술입니다.
+    즉, 순차적 호출을 하나의 그룹으로 "그룹화"할 수 있습니다.
+
+    Debounce : 연이어 호출되는 함수들 중 마지막 함수(또는 제일 처음)만 호출하도록 하는 것
+     */
     fun parseWeb(name: String, url: String, page: Int) {
         parseJob?.cancel()
         parseJob = viewModelScope.launch {
             delay(400L)
             _isProcessing.value = true
             try {
+                //Repository에 데이터 parsing 요청
                 val data = parsingRepository.parseData(url + page.toString()).await()
-
                 processData(name, data, page)
-
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
@@ -44,17 +50,18 @@ class ParsingViewModel : ViewModel() {
         }
     }
 
-    fun processData(name: String, data: Document, page:Int) {
+    fun processData(name: String, data: Document, page: Int) {
         when (name) {
             "Ygosu" -> processYgosuData(data, page)
             "Bobae" -> processBobaeData(data, page)
         }
     }
 
-    fun processBobaeData(data:Document, page:Int){
+    fun processBobaeData(data: Document, page: Int) {
 
     }
-    fun processYgosuData(data: Document, page:Int){
+
+    fun processYgosuData(data: Document, page: Int) {
         val tmpList = ArrayList<ContentData>()
 
 
